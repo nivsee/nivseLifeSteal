@@ -33,7 +33,7 @@ public final class LifeSteal extends JavaPlugin {
         }
 
         try {
-            database = new Database(this, "jdbc:sqlite:" + getDataFolder().getAbsolutePath() + "\\database.db");
+            database = new Database(this, "jdbc:sqlite:" + getDataFolder().getAbsolutePath() + "/database.db");
         } catch (SQLException e) {
             Bukkit.getPluginManager().disablePlugin(this);
             throw new RuntimeException(e);
