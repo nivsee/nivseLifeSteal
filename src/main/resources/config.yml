@@ -1,0 +1,22 @@
+health: 20 # Startowa ilość HP (10 serc = 20HP)
+lost-on-death: 2 #Ilość HP tracona podczas śmierci (i otrzymywana przez zabójcę)
+max-limit: 60 # Maksymalny limit serc
+
+heart-item:
+  material: RED_DYE
+  custommodelid: 1 #Używane jeżeli chcesz tworzyć customowe modele do serc
+  hp: 2
+  name: "&c&lSerce"
+  lore:
+    - "&cNaciśnij prawym przyciskiem mysz, by otrzymać {hearts}❤" #{hearts} = ilość serc
+
+commands-no-hearts: #Komendy wykonywane po utraceniu przez gracza wszystkich serc, {player} = nick gracza
+  - "tempban {player} 1d &c&lUtracileś wszystkie serca"
+
+
+messages:
+  limit: "&c&lOsiągnąłeś limit serc!"
+  consumed: "&c&lSpożyłeś serce i otrzymałeś {hearts}❤"
+  full-inventory: "&c&lTwój ekwipunek jest pełny!"
+  not-enough-hearts: "&c&lNie masz tylu serc!"
+

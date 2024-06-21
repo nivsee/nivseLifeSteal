@@ -1,0 +1,6 @@
+name: nivseLifeSteal
+version: '${project.version}'
+main: dev.nh3.lifesteal.LifeSteal
+api-version: '1.20'
+prefix: "[LS]"
+authors: [nivse]
