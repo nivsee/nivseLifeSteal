@@ -24,9 +24,10 @@ public class PlayerDeath implements Listener {
         PlayerEntity playerEntity = database.getPlayerDao().queryForId(player.getUniqueId().toString());
         int postHp = playerEntity.getHealth() - Config.getInt("lost-on-death");
 
-        if(postHp <= 0){
-            playerEntity.setHealth(Config.getInt("health"));
+        // Brak serc
+        if (postHp <= 0) {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Config.getInt("health"));
+            playerEntity.setHealth(Config.getInt("health"));
             database.getPlayerDao().update(playerEntity);
 
             List<String> commands = Config.getStringList("commands-no-hearts");
@@ -36,22 +37,23 @@ public class PlayerDeath implements Listener {
             return;
         }
 
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(postHp);
         playerEntity.setHealth(postHp);
         database.getPlayerDao().update(playerEntity);
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(postHp);
 
+        // Zabicie przez gracza
         if(e.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK){
-            if(e.getPlayer().getKiller() != null){
-                Player attacker = e.getPlayer().getKiller();
-                PlayerEntity attackerPlayerEntity = database.getPlayerDao().queryForId(attacker.getUniqueId().toString());
-                int attackerPostHp = attackerPlayerEntity.getHealth() + Config.getInt("hp");
-                if(attackerPostHp > Config.getInt("max-limit")) {
-                    attacker.sendMessage(Utils.translate(Config.getString("messages.limit")));
+            Player killer = e.getPlayer().getKiller();
+            if(killer != null) {
+                PlayerEntity killerEntity = database.getPlayerDao().queryForId(killer.getUniqueId().toString());
+                int killerPostHp = killerEntity.getHealth() + Config.getInt("lost-on-death");
+                if (killerPostHp > Config.getInt("max-limit")){
+                    killer.sendMessage(Utils.translate(Config.getString("messages.limit")));
                     return;
                 }
-                attacker.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(attackerPostHp);
-                attackerPlayerEntity.setHealth(attackerPostHp);
-                database.getPlayerDao().update(attackerPlayerEntity);
+                killerEntity.setHealth(killerPostHp);
+                database.getPlayerDao().update(killerEntity);
+                killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(killerPostHp);
             }
         }
     }
