@@ -30,6 +30,7 @@ public class WithdrawCommand{
         int health = pe.getHealth() - (ammount * 2);
         if (health <= 0){
             sender.sendMessage(Utils.translate(Config.getString("messages.not-enough-hearts")));
+            return;
         }
 
         Heart heart = new Heart(
